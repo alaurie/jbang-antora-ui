@@ -5,9 +5,12 @@
     <script>var uiRootPath = '{{{uiRootPath}}}'</script>
     <script>
       (function () {
-        var saved = localStorage.getItem('jb-theme')
+        var mode = 'auto'
+        try { mode = window.localStorage.getItem('jb-theme') || 'auto' } catch (e) {}
+        if (mode !== 'light' && mode !== 'dark') mode = 'auto'
         var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-        var theme = saved || (prefersDark ? 'dark' : 'light')
-        document.documentElement.setAttribute('data-theme', theme)
+        var root = document.documentElement
+        root.setAttribute('data-theme-mode', mode)
+        root.setAttribute('data-theme', mode === 'auto' ? (prefersDark ? 'dark' : 'light') : mode)
       })()
     </script>
